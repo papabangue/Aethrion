@@ -50,6 +50,10 @@ html,body{margin:0;height:100%;background:#07050d;color:#ece6f5;font-family:Nuni
 <script>
 const VERSAO = "0.9.0-beta";
 
+// O Aethrion só usa chat de TEXTO. O sistema de chat (Vivox) tenta abrir o microfone ao conectar;
+// aqui respondemos "não" direto, assim o navegador nem pergunta e o chat de texto continua funcionando.
+if (navigator.mediaDevices) navigator.mediaDevices.getUserMedia = () => Promise.reject(new DOMException("O Aethrion não usa microfone", "NotAllowedError"));
+
 const canvas = document.getElementById("unity-canvas");
 const load = document.getElementById("load");
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -89,16 +93,19 @@ function setProg(p, txt){
 
 // O arquivo grande do jogo fica dividido em pedaços de 20 MB (limite do Cloudflare Pages).
 // Aqui baixamos os pedaços (3 de cada vez) e juntamos de novo antes de abrir o jogo.
+let INFO = null, ID = VERSAO;
+async function lerVersao(){
+  try { const r = await fetch("Build/partes.json?t=" + Date.now(), {cache: "no-store"}); if (r.ok) { INFO = await r.json(); ID = INFO.id || (VERSAO + "-" + INFO.bytes); } } catch (e) {}
+  config.frameworkUrl += "?v=" + ID; config.codeUrl += "?v=" + ID;
+}
 async function juntarDados(){
-  let info;
-  try { const r = await fetch("Build/partes.json", {cache: "no-cache"}); if (!r.ok) return; info = await r.json(); }
-  catch (e) { return; }
+  const info = INFO; if (!info) return;
   const total = info.bytes, partes = new Array(info.partes), recebido = new Array(info.partes).fill(0);
   const atualiza = () => setProg(recebido.reduce((a, b) => a + b, 0) / total * .85, "Baixando o reino…");
   async function baixa(i){
     for (let tentativa = 0; tentativa < 3; tentativa++){
       try {
-        const r = await fetch("Build/" + info.arquivo + ".part" + i + "?v=" + VERSAO);
+        const r = await fetch("Build/" + info.arquivo + ".part" + i + "?v=" + ID);
         if (!r.ok) throw new Error("HTTP " + r.status);
         const leitor = r.body.getReader(), pedacos = [];
         recebido[i] = 0;
@@ -114,7 +121,6 @@ async function juntarDados(){
 }
 
 const s = document.createElement("script");
-s.src = "Build/AethrionWeb.loader.js";
 s.onerror = () => fail("Não foi possível baixar os arquivos do jogo.");
 s.onload = async () => {
   try { await juntarDados(); } catch (e) { fail("A internet caiu no meio do download. Recarregue a página para tentar de novo."); return; }
@@ -125,7 +131,7 @@ s.onload = async () => {
     document.getElementById("fs").onclick = () => inst.SetFullscreen(1);
   }).catch(e => fail(String(e)));
 };
-document.body.appendChild(s);
+lerVersao().then(() => { s.src = "Build/AethrionWeb.loader.js?v=" + ID; document.body.appendChild(s); });
 
 // botões do site só aparecem com o mouse no topo da tela (não cobrem o jogo)
 const bar = document.getElementById("bar"); let esconde;
