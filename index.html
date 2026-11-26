@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aethrion — RPG de fantasia online</title>
+<meta name="description" content="Aethrion: RPG de fantasia em pixel art, online, com pesca, pets, chefes e itens raros. Jogue grátis no navegador.">
+<meta property="og:title" content="Aethrion — RPG de fantasia online">
+<meta property="og:description" content="Jogue grátis no navegador. Versão completa na Steam.">
+<meta property="og:image" content="img/keyart.jpg">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0a18;--bg2:#161126;--card:#1d1631;--gold:#f0bd52;--gold2:#a8761f;--cyan:#6fd8f5;--text:#ece6f5;--mute:#a79fbd;
+ --sol:#f0bd52;--vazio:#e2475d;--alem:#6fd8f5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Nunito,system-ui,sans-serif;line-height:1.55}
+a{color:inherit}
+img.px{image-rendering:pixelated}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:Cinzel,serif;margin:0;letter-spacing:.02em}
+h2{font-size:clamp(28px,4vw,42px);color:var(--gold);text-align:center}
+.sub{color:var(--mute);text-align:center;max-width:640px;margin:10px auto 0}
+section{padding:90px 0}
+
+/* topo */
+nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 26px;background:linear-gradient(#0d0a18ee,#0d0a1800)}
+nav .brand{font-family:Cinzel,serif;font-weight:800;color:var(--gold);text-decoration:none;font-size:20px;letter-spacing:.08em}
+nav .links a{margin-left:22px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;opacity:.85}
+nav .links a:hover{opacity:1;color:var(--gold)}
+
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero .bg{position:absolute;inset:0;background:url(img/keyart.jpg) center/cover;transform:scale(1.06);animation:drift 22s ease-in-out infinite alternate}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#0d0a1800 0%,#0d0a1888 55%,#0d0a18 100%)}
+@keyframes drift{to{transform:scale(1.14) translate(-1.5%,1%)}}
+.hero .in{position:relative;z-index:2;padding:110px 20px 60px}
+.hero .logo{width:min(560px,86vw);filter:drop-shadow(0 10px 30px #000a)}
+.hero p.tag{font-size:clamp(18px,2.2vw,22px);max-width:620px;margin:6px auto 30px;text-shadow:0 2px 10px #000}
+.btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:10px;font-weight:800;font-size:17px;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.play{background:linear-gradient(#ffd77a,#d9962c);color:#2a1606;border-color:#fff3c4;box-shadow:0 6px 24px #f0bd5255}
+.btn.play:hover{box-shadow:0 8px 34px #f0bd5299}
+.btn.steam{background:#171a21cc;color:#fff;border-color:#66c0f4}
+.btn.steam small{font-weight:700;opacity:.75;font-size:12px}
+.hero .note{margin-top:16px;font-size:14px;color:var(--mute)}
+
+/* recursos */
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;margin-top:44px}
+.feat{background:var(--card);border:1px solid #2e2548;border-radius:14px;overflow:hidden}
+.feat img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-bottom:1px solid #2e2548}
+.feat div{padding:16px 18px 20px}
+.feat h3{font-size:19px;color:var(--gold);margin-bottom:6px}
+.feat p{margin:0;color:var(--mute);font-size:15px}
+
+/* raros */
+#raros{background:radial-gradient(ellipse at 50% 0%,#2a1d4a 0%,var(--bg) 70%)}
+.rares{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:44px}
+.rares .rare{width:172px}
+.rare{position:relative;background:var(--card);border:2px solid #2e2548;border-radius:14px;padding:16px 12px 14px;text-align:center;transition:transform .2s,border-color .2s}
+.rare:hover{transform:translateY(-4px)}
+.rare .ic{width:120px;height:120px;margin:0 auto;display:grid;place-items:center;border-radius:50%}
+.rare img{width:104px;height:104px;image-rendering:pixelated;animation:bob 3s ease-in-out infinite}
+.rare:nth-child(2n) img{animation-delay:-1.5s}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.rare h4{margin:10px 0 6px;font-size:15px}
+.tagr{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.06em;background:#0008}
+.r-sol{--c:var(--sol)}.r-vazio{--c:var(--vazio)}.r-alem{--c:var(--alem)}
+.rare{border-color:color-mix(in srgb,var(--c) 45%,#2e2548)}
+.rare:hover{border-color:var(--c);box-shadow:0 0 28px color-mix(in srgb,var(--c) 35%,transparent)}
+.rare .ic{background:radial-gradient(circle,color-mix(in srgb,var(--c) 35%,transparent) 0%,transparent 68%)}
+.rare .tagr{color:var(--c)}
+.rare small{display:block;color:var(--mute);font-size:12px;margin-top:4px}
+.chest{margin:40px auto 0;max-width:760px;background:#120e22;border:1px dashed #4b3c75;border-radius:14px;padding:18px 22px;color:var(--mute);font-size:15px;text-align:center}
+.chest b{color:var(--text)}
+
+/* comparação */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+.plan{background:var(--card);border:2px solid #2e2548;border-radius:16px;padding:26px 26px 30px}
+.plan.full{border-color:#66c0f4;background:linear-gradient(#1b2338,#151a2a)}
+.plan h3{font-size:22px;margin-bottom:4px}
+.plan .p{color:var(--mute);margin-bottom:16px}
+.plan ul{list-style:none;padding:0;margin:0}
+.plan li{padding:8px 0 8px 30px;position:relative;border-top:1px solid #ffffff10}
+.plan li::before{content:"✔";position:absolute;left:4px;color:#7fe08a;font-weight:800}
+.plan li.no::before{content:"—";color:#6c6485}
+.plan li.no{color:#8a82a3}
+.plan .btn{margin-top:22px;width:100%;justify-content:center}
+
+/* faq */
+.faq{max-width:780px;margin:40px auto 0}
+details{background:var(--card);border:1px solid #2e2548;border-radius:12px;padding:14px 18px;margin-bottom:12px}
+summary{cursor:pointer;font-weight:800}
+details p{color:var(--mute);margin:10px 0 0}
+
+footer{padding:40px 0 50px;text-align:center;color:#6f6889;font-size:14px;border-top:1px solid #241d3a}
+footer img{width:150px;opacity:.85}
+
+@media (max-width:760px){.cmp{grid-template-columns:1fr}nav .links a:not(.cta){display:none}section{padding:64px 0}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="#">AETHRION</a>
+  <div class="links">
+    <a href="#mundo">O jogo</a>
+    <a href="#raros">Itens raros</a>
+    <a href="#steam">Versão Steam</a>
+    <a href="#faq">Dúvidas</a>
+    <a class="cta" href="jogar.html" style="color:var(--gold)">▶ Jogar</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="bg"></div>
+  <div class="in">
+    <img class="logo" src="img/logo.png" alt="Aethrion">
+    <p class="tag">Sete heróis prenderam Vorath do outro lado da Fenda.<br>Agora é a sua vez de despertar no Reino.</p>
+    <div class="btns">
+      <a class="btn play" href="jogar.html">▶ JOGAR GRÁTIS NO NAVEGADOR</a>
+      <a class="btn steam" href="#steam" data-steam>LISTA DE DESEJOS NA STEAM <small>em breve</small></a>
+    </div>
+    <div class="note">Sem instalar nada · funciona no computador (Chrome, Edge ou Firefox)</div>
+  </div>
+</header>
+
+<section id="mundo">
+  <div class="wrap">
+    <h2>Um reino vivo, online</h2>
+    <p class="sub">Explore a cidade, enfrente chefes, pesque no rio, cozinhe na fogueira e encontre outros jogadores pelo caminho.</p>
+    <div class="feats">
+      <div class="feat"><img src="img/praca.jpg" alt="Praça do Alvorecer"><div><h3>Mundo aberto</h3><p>Praça, mercado, arena, florestas e labirintos cheios de monstros e segredos.</p></div></div>
+      <div class="feat"><img src="img/online.jpg" alt="Jogadores online"><div><h3>Online de verdade</h3><p>Veja outros heróis andando pelo reino, converse no chat e dispute o ranking.</p></div></div>
+      <div class="feat"><img src="img/pesca.jpg" alt="Pesca"><div><h3>Pesca e culinária</h3><p>10 peixes no rio e no mar. Cozinhe pratos que dão força, vida e velocidade.</p></div></div>
+      <div class="feat"><img src="img/herois.jpg" alt="Escolha seu herói"><div><h3>Seu herói</h3><p>Até 3 heróis por conta, com classe, elemento e um pet que vira montaria.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="raros">
+  <div class="wrap">
+    <h2>Itens raros</h2>
+    <p class="sub">Armas, pets e mantos das raridades mais altas. Na versão Steam, você pode <b>trocar e vender</b> os seus no Mercado da Comunidade Steam.</p>
+    <div class="rares">
+      <div class="rare r-alem"><div class="ic"><img src="img/raro-espada-6.png" alt=""></div><h4>Espada do Além</h4><span class="tagr">SOBRENATURAL</span><small>Arma</small></div>
+      <div class="rare r-vazio"><div class="ic"><img src="img/raro-cajado-5.png" alt=""></div><h4>Cajado do Vazio</h4><span class="tagr">MÍTICO</span><small>Arma</small></div>
+      <div class="rare r-sol"><div class="ic"><img src="img/raro-arco-4.png" alt=""></div><h4>Arco do Sol</h4><span class="tagr">LENDÁRIO</span><small>Arma</small></div>
+      <div class="rare r-alem"><div class="ic"><img src="img/raro-foice-6.png" alt=""></div><h4>Foice do Além</h4><span class="tagr">SOBRENATURAL</span><small>Arma</small></div>
+      <div class="rare r-sol"><div class="ic"><img src="img/raro-pet-4.png" alt=""></div><h4>Pet do Sol</h4><span class="tagr">LENDÁRIO</span><small>Pet · vira montaria</small></div>
+      <div class="rare r-vazio"><div class="ic"><img src="img/raro-pet-5.png" alt=""></div><h4>Pet do Vazio</h4><span class="tagr">MÍTICO</span><small>Pet · vira montaria</small></div>
+      <div class="rare r-alem"><div class="ic"><img src="img/raro-pet-6.png" alt=""></div><h4>Pet do Além</h4><span class="tagr">SOBRENATURAL</span><small>Pet · vira montaria</small></div>
+      <div class="rare r-alem"><div class="ic"><img src="img/raro-manto-6.png" alt=""></div><h4>Manto do Além</h4><span class="tagr">SOBRENATURAL</span><small>Visual</small></div>
+      <div class="rare r-alem"><div class="ic"><img src="img/raro-asas-6.png" alt=""></div><h4>Asas do Além</h4><span class="tagr">SOBRENATURAL</span><small>Visual</small></div>
+    </div>
+    <div class="chest">🗝️ <b>Como conseguir:</b> abrindo o Baú do Chefe. A chave vem <b>jogando</b> — chefes, eventos do mundo, login diário e passe. <b>Chaves nunca são vendidas.</b> As chances de cada raridade aparecem no próprio baú.</div>
+  </div>
+</section>
+
+<section id="steam">
+  <div class="wrap">
+    <h2>Navegador ou Steam?</h2>
+    <p class="sub">Experimente grátis agora. Quando o jogo for lançado na Steam, a versão completa traz tudo isso:</p>
+    <div class="cmp">
+      <div class="plan">
+        <h3>🌐 Navegador</h3>
+        <div class="p">Grátis · jogue agora</div>
+        <ul>
+          <li>Mundo, missões, chefes e labirintos</li>
+          <li>Pesca, culinária e pets</li>
+          <li>Chat online e ranking</li>
+          <li>Ver a loja, o VIP e o passe</li>
+          <li class="no">Comprar VIP, passe e gemas</li>
+          <li class="no">Trocar e vender itens raros</li>
+          <li class="no">Conquistas e save na nuvem Steam</li>
+        </ul>
+        <a class="btn play" href="jogar.html">▶ JOGAR AGORA</a>
+      </div>
+      <div class="plan full">
+        <h3>🎮 Versão completa na Steam</h3>
+        <div class="p">Em breve</div>
+        <ul>
+          <li>Tudo da versão de navegador</li>
+          <li>VIP: +20% de ouro, +10% de XP, modo automático e prêmio diário em dobro</li>
+          <li>Passe de batalha premium com 40 níveis</li>
+          <li>Itens raros no seu Inventário Steam</li>
+          <li>Trocar e vender raros no Mercado da Comunidade Steam</li>
+          <li>Conquistas Steam</li>
+          <li>Save na nuvem Steam</li>
+        </ul>
+        <a class="btn steam" href="#steam" data-steam>LISTA DE DESEJOS NA STEAM <small>em breve</small></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <h2>Dúvidas</h2>
+    <div class="faq">
+      <details><summary>Preciso instalar alguma coisa?</summary><p>Não. Clique em “Jogar” e o jogo abre no navegador. Na primeira vez ele baixa uns 180 MB (depois fica guardado e abre mais rápido).</p></details>
+      <details><summary>Funciona no celular?</summary><p>O jogo foi feito para computador (teclado e mouse). No celular pode até abrir, mas não é recomendado.</p></details>
+      <details><summary>Meu progresso fica salvo?</summary><p>Sim, no próprio navegador. Se você limpar os dados do site ou trocar de navegador/computador, o progresso do navegador não vai junto.</p></details>
+      <details><summary>Dá para comprar coisas no site?</summary><p>Não. No navegador nada é vendido. VIP, passe e gemas serão vendidos só dentro da versão Steam, pelo sistema de pagamento da própria Steam.</p></details>
+      <details><summary>Os itens raros valem dinheiro?</summary><p>Na versão Steam, os itens raros poderão ser trocados e vendidos no Mercado da Comunidade Steam. O valor é definido pelos próprios jogadores, e o saldo fica na carteira Steam.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img src="img/logo.png" alt="Aethrion"><br>
+  © 2026 Luorix · Aethrion v0.9 beta
+</footer>
+
+<script>
+// Quando a página da Steam existir, coloque o link aqui (ex.: "https://store.steampowered.com/app/123456/Aethrion/").
+const STEAM_URL = "";
+document.querySelectorAll("[data-steam]").forEach(a => {
+  if (STEAM_URL) { a.href = STEAM_URL; a.target = "_blank"; a.querySelector("small")?.remove(); }
+  else a.addEventListener("click", e => { e.preventDefault(); alert("A página do Aethrion na Steam ainda vai ser criada. Volte em breve!"); });
+});
+</script>
+</body>
+</html>
